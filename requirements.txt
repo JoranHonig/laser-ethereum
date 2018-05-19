@@ -4,3 +4,4 @@ coverage
 pytest
 mock
 pytest_mock
+bitarray

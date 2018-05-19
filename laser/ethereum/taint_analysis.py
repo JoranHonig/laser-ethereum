@@ -1,6 +1,6 @@
 import logging, copy
 import laser.ethereum.helper as helper
-
+from bitarray import bitarray
 
 class TaintRecord:
     """
@@ -165,11 +165,9 @@ class TaintRunner:
     def mutate_stack(record, mutator):
         pop, push = mutator
 
-        values = []
+        taint = bitarray('0')
         for i in range(pop):
-            values.append(record.stack.pop())
-
-        taint = any(values)
+            taint |= record.stack.pop()
 
         for i in range(push):
             record.stack.append(taint)
@@ -259,10 +257,10 @@ class TaintRunner:
         'ADD': (2, 1),
         'MUL': (2, 1),
         'SUB': (2, 1),
-        'AND': (2, 1),
-        'OR':  (2, 1),
-        'XOR': (2, 1),
-        'NOT': (1, 1),
+        'AND': (2, 1), # di
+        'OR':  (2, 1), # di
+        'XOR': (2, 1), # di
+        'NOT': (1, 1), # di
         'BYTE': (2, 1),
         'DIV': (2, 1),
         'MOD': (2, 1),
